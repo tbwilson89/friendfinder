@@ -4,8 +4,10 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
       <link rel="stylesheet" href="">
       <script src="https://code.jquery.com/jquery.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
       <script src=""></script>
       <title>Friend Finder || Survey</title>
     </head>
@@ -109,9 +111,33 @@
           <br>
           <button id='submit' type="button" class="btn btn-primary btn-lg btn-block">Submit</button>
         </form>
+        <footer class="footer">
+          <div class="container">
+            <p><a href="/api/friends">API Friends List</a> | <a href="https://github.com/tbwilson89/friendfinder">GitHub Repo</a></p>
+          </div>
+        </footer>
 
       </div>
     </section>
+    <div class="modal fade" id="match-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h3 class="modal-title" id="exampleModalLabel">Top Friend Match!</h3>
+          </div>
+          <div class="modal-body">
+            <h3 id='modal-name'></h3>
+            <img id='modal-img' src="" alt="..." class="img-thumbnail">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
 
@@ -135,15 +161,19 @@
         $('input[name=ten]:checked').val(),
       ]
     }
-    $.post('/api/friends', newFriend, (data)=>{
+    $.post('/api/friends', newFriend, function(data){
+      console.log(data)
       if(data){
-        alert('Successfully added account')
+        $('#modal-name').text(data.name)
+        $('#modal-img').attr('src', data.photo)
+        $('#match-modal').modal('toggle')
       } else {
         alert('Seems to have been an issue...')
       }
-
-
     })
+
     console.log(newFriend)
   })
+
+
 </script>
